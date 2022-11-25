@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+  web:
+    build: .
+    tty: true
+    stdin_open: true
+    # command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
+    command: sh -c "./docker-scripts/rails.sh"
+    volumes:
+      - .:/docker-rails7-esbuild-tailwind-pgsql
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
