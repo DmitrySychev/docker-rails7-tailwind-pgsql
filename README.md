@@ -1,24 +1,17 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Template for a dockerized rails 7 config
 
-Things you may want to cover:
+  - Ruby 3.1.2
+  - Rails 7.0.4
+  - esbuild
+  - tailwind
+  - postgres
 
-* Ruby version
+## Instructions for running
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+  * to use your own name for the app, change all instance of `docker-rails7-esbuild-tailwind-pgsql
+` in the app.
+  * in `./docker-scripts/rails.sh` uncomment the specified lines when running for the first time.
+  * running for the second time, make sure to comment out the lines in the `rails.sh`, otherwise the DB will be recreated.
+  * to run the app `docker compose up`
