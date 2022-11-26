@@ -9,7 +9,6 @@ services:
     build: .
     tty: true
     stdin_open: true
-    # command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
     command: sh -c "./docker-scripts/rails.sh"
     volumes:
       - .:/docker-rails7-esbuild-tailwind-pgsql
