@@ -4,10 +4,10 @@
 # echo "create pg database"
 # bundle exec rake db:create
 
-# echo "Load schemas database"
-# bundle exec rake db:schema:load
+# echo "run rails db migradtions"
+# bundle exec rake db:migrate
 
-# echo "Seed database"
+# echo "seed database"
 # bundle exec rake db:seed
 
 # echo "Running BUNDLE INSTALL for rails..."
