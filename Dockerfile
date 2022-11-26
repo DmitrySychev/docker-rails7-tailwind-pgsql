@@ -1,8 +1,7 @@
 FROM ruby:3.1.2-buster
 
 RUN apt-get update -qq && apt-get install -y postgresql-client
-# RUN apt-get update -qq && apt-get install -y nodejs npm postgresql-client
-# RUN npm install -g yarn
+
 RUN curl -sL https://deb.nodesource.com/setup_19.x | bash -\
   && apt-get update -qq && apt-get install -qq --no-install-recommends \
     nodejs \
