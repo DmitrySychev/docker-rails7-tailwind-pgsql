@@ -1,22 +1,37 @@
-FROM ruby:3.1.2-buster
+ARG RUBY_VERSION=3.3.3
 
-RUN apt-get update -qq && apt-get install -y postgresql-client
+FROM ruby:$RUBY_VERSION-alpine AS base
 
-RUN curl -sL https://deb.nodesource.com/setup_19.x | bash -\
-  && apt-get update -qq && apt-get install -qq --no-install-recommends \
-    nodejs \
-  && apt-get upgrade -qq \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*\
-  && npm install -g yarn@1
+ENV RAILS_ENV=development
 
-RUN yarn add esbuild
-RUN yarn add sass
+FROM base
+ARG BUNDLER_VERSION=2.5.11
 
-WORKDIR /docker-rails7-esbuild-tailwind-pgsql
-COPY Gemfile /docker-rails7-esbuild-tailwind-pgsql/Gemfile
-COPY Gemfile.lock /docker-rails7-esbuild-tailwind-pgsql/Gemfile.lock
+RUN set -eux; \
+     apk add --no-cache \
+          g++ \
+          make \
+          git \
+          libpq-dev \
+          bash \
+          libpng \
+          imagemagick \
+          gcompat \
+          tzdata \
+          vips-dev \
+          docker-cli \
+    && rm -rf /var/cache/apk/*
 
-EXPOSE 3000
+COPY Gemfile Gemfile.lock ./
 
-RUN bundle install
+RUN gem install bundler:$BUNDLER_VERSION \
+    && gem update --system \
+    && gem install tzinfo-data \
+    && gem install nokogiri
+
+RUN echo 'gem: --no-document' >> ~/.gemrc \
+    && bundle install
+
+WORKDIR /docker-rails7-tailwind-pgsql
+
+COPY . .

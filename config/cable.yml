@@ -7,4 +7,4 @@ test:
 production:
   adapter: redis
   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: docker_rails7_esbuild_tailwind_pgsql_production
+  channel_prefix: docker_rails7_tailwind_pgsql_production
