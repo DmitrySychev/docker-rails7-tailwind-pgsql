@@ -20,11 +20,20 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  database: docker_rails7_tailwind_pgsql_development
-  host: <%= ENV["PGHOST"] %>
-  username: <%= ENV["POSTGRES_USER"] %>
-  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  primary: &primary_docker_rails7_tailwind_pgsql_development
+    <<: *default
+    database: docker_rails7_tailwind_pgsql_development
+    host: <%= ENV["PGHOST"] %>
+    username: <%= ENV["POSTGRES_USER"] %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+  queue:
+    <<: *primary_docker_rails7_tailwind_pgsql_development
+    database: docker_rails7_tailwind_pgsql_development_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_docker_rails7_tailwind_pgsql_development
+    database: docker_rails7_tailwind_pgsql_development_cable
+    migrations_paths: db/cable_migrate
 
 
   # The specified database role being used to connect to PostgreSQL.
@@ -84,7 +93,16 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: docker_rails7_tailwind_pgsql_production
-  username: docker_rails7_tailwind_pgsql
-  password: <%= ENV["DOCKER_RAILS7_TAILWIND_PGSQL_DATABASE_PASSWORD"] %>
+  primary: &primary_docker_rails7_tailwind_pgsql_production
+    <<: *default
+    database: docker_rails7_tailwind_pgsql_production
+    username: docker_rails7_tailwind_pgsql
+    password: <%= ENV["DOCKER_RAILS7_TAILWIND_PGSQL_DATABASE_PASSWORD"] %>
+  queue:
+    <<: *primary_docker_rails7_tailwind_pgsql_production
+    database: docker_rails7_tailwind_pgsql_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_docker_rails7_tailwind_pgsql_production
+    database: docker_rails7_tailwind_pgsql_production_cable
+    migrations_paths: db/cable_migrate
